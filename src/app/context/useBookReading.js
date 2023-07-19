@@ -1,8 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
 
-import useLocalStorage from "../hook/getStorageValue";
-
 // Creamos el contexto para los libros
 export const BookReadingContext = createContext(null);
 
@@ -10,6 +8,13 @@ export const BookReadingContext = createContext(null);
 export const useBookReading = () => {
   const context = useContext(BookReadingContext);
   return context;
+};
+
+const getStorageValue = (key, defaultValue) => {
+  const saved =
+    typeof window !== "undefined" && window.localStorage.getItem(key);
+  const initial = JSON.parse(saved);
+  return initial || defaultValue;
 };
 
 // Proveedor de contexto para los libros
@@ -22,8 +27,8 @@ export default function BookReadingContextProvider({ children }) {
   const [booksCount, setBooksCount] = useState(0);
 
   useEffect(() => {
-    setBooksId(useLocalStorage("booksId", []));
-    setBooksCount(useLocalStorage("booksCount", 0));
+    setBooksId(getStorageValue("booksId", []));
+    setBooksCount(getStorageValue("booksCount", 0));
   }, []);
 
   const addBook = (id) => {
