@@ -22,7 +22,7 @@ export default function BookReadingContextProvider({ children }) {
 
   useEffect(() => {
     setBooksId(useLocalStorage("booksId", []));
-    setBooksCount(useLocalStorage("booksCount", 0));
+    setBooksCount(useLocalStorage("booksCount", [0]));
   }, []);
 
   const addBook = (id) => {
@@ -32,7 +32,7 @@ export default function BookReadingContextProvider({ children }) {
       localStorage.setItem("booksId", JSON.stringify(updatedBooks));
       return updatedBooks;
     });
-    setBooksCount((prevCount) => {
+    setBooksCount((...prevCount) => {
       const updatedCount = prevCount + 1;
       localStorage.setItem("booksCount", JSON.stringify(updatedCount));
       return updatedCount;
@@ -60,7 +60,7 @@ export default function BookReadingContextProvider({ children }) {
         setBooksId(JSON.parse(localStorage.getItem("booksId")) || []);
       }
       if (event.key === "booksCount") {
-        setBooksCount(JSON.parse(localStorage.getItem("booksCount")) || 0);
+        setBooksCount(JSON.parse(localStorage.getItem("booksCount")) || [0]);
       }
     };
 
