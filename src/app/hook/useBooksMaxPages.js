@@ -1,4 +1,4 @@
-export const useBooksMaxPages = (allBooks, setMaxPagesCount) => {
+export const useBooksMaxPages = (allBooks) => {
   // Método para encontrar el libro con más páginas
   let maxPages = 0;
   if (Array.isArray(allBooks)) {
@@ -9,5 +9,5 @@ export const useBooksMaxPages = (allBooks, setMaxPagesCount) => {
       }
     });
   }
-  setMaxPagesCount(maxPages);
+  return maxPages;
 };
