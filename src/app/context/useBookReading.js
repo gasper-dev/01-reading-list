@@ -10,6 +10,7 @@ export const useBookReading = () => {
   return context;
 };
 
+// Función para obtener el valor inicial del estado desde localStorage
 const getStorageValue = (key, defaultValue) => {
   const saved =
     typeof window !== "undefined" && window.localStorage.getItem(key);
