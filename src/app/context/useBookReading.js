@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
+
 import useLocalStorage from "../hook/getStorageValue";
 
 // Creamos el contexto para los libros
@@ -17,12 +18,12 @@ export default function BookReadingContextProvider({ children }) {
   const [isOpenCarsList, setOpenCarsList] = useState(false);
 
   // Estado para los IDs de los libros y su contador
-  const [booksId, setBooksId] = useState([null]);
-  const [booksCount, setBooksCount] = useState([null]);
+  const [booksId, setBooksId] = useState("");
+  const [booksCount, setBooksCount] = useState(0);
 
   useEffect(() => {
     setBooksId(useLocalStorage("booksId", []));
-    setBooksCount(useLocalStorage("booksCount", [0]));
+    setBooksCount(useLocalStorage("booksCount", 0));
   }, []);
 
   const addBook = (id) => {
@@ -32,7 +33,7 @@ export default function BookReadingContextProvider({ children }) {
       localStorage.setItem("booksId", JSON.stringify(updatedBooks));
       return updatedBooks;
     });
-    setBooksCount((...prevCount) => {
+    setBooksCount((prevCount) => {
       const updatedCount = prevCount + 1;
       localStorage.setItem("booksCount", JSON.stringify(updatedCount));
       return updatedCount;
@@ -60,7 +61,7 @@ export default function BookReadingContextProvider({ children }) {
         setBooksId(JSON.parse(localStorage.getItem("booksId")) || []);
       }
       if (event.key === "booksCount") {
-        setBooksCount(JSON.parse(localStorage.getItem("booksCount")) || [0]);
+        setBooksCount(JSON.parse(localStorage.getItem("booksCount")) || 0);
       }
     };
 
