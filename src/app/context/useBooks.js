@@ -26,16 +26,15 @@ export default function BooksContextProvider({ children }) {
   const [searchBooks, setSearchBooks] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("Todos");
   const [isLoading, setIsLoading] = useState(true);
-  const [maxPagesCount, setMaxPagesCount] = useState(null);
 
   useEffect(() => {
     //  bookData es la lista de objetos de libros
     setAllBooks(bookData.library);
     setIsLoading(false);
     // Usamos hook personalizado para encontrar el libro con más páginas
-    useBooksMaxPages(allBooks, setMaxPagesCount);
   }, [allBooks]);
 
+  const maxPagesCount = useBooksMaxPages(allBooks);
   // Se filtran los libros según varios criterios establecidos.
   const filteredBooks = filters(
     allBooks,
