@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
+import useLocalStorage from "../hook/getStorageValue";
 
 // Creamos el contexto para los libros
 export const BookReadingContext = createContext(null);
@@ -10,27 +11,20 @@ export const useBookReading = () => {
   return context;
 };
 
-// Función para obtener el valor inicial del estado desde localStorage
-function getStorageValue(key, defaultValue) {
-  const saved = localStorage.getItem(key);
-  const initial = JSON.parse(saved);
-  return initial || defaultValue;
-}
-
 // Proveedor de contexto para los libros
 export default function BookReadingContextProvider({ children }) {
   // Estado para abril o serrar la lista de books en el carrito
   const [isOpenCarsList, setOpenCarsList] = useState(false);
 
   // Estado para los IDs de los libros y su contador
-  const [booksId, setBooksId] = useState(() => {
-    return getStorageValue("booksId", []);
-  });
-  const [booksCount, setBooksCount] = useState(() => {
-    return getStorageValue("booksCount", 0);
-  });
+  const [booksId, setBooksId] = useState([null]);
+  const [booksCount, setBooksCount] = useState([null]);
 
-  // Función para agregar un libro
+  useEffect(() => {
+    setBooksId(useLocalStorage("booksId", []));
+    setBooksCount(useLocalStorage("booksCount", 0));
+  }, []);
+
   const addBook = (id) => {
     setBooksId((prevBooks) => {
       const updatedBooks = [...prevBooks, id];
